@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-APPNAME="appname"
+APPNAME="copy-catcher"
 
 sudo rm /usr/share/applications/$APPNAME.desktop
 sudo rm -r /opt/$APPNAME

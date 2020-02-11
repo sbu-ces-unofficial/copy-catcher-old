@@ -5,7 +5,7 @@ if [ -z "$VERSION" ]; then
     read -p 'What is the version: ' VERSION
 fi
 
-APPNAME="appname"
+APPNAME="copy-catcher"
 
 CURRENT_DIR="$(pwd)"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
