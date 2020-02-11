@@ -1,5 +1,5 @@
 [package]
-name = "sciter-template"
+name = "copy-catcher"
 version = "0.1.0"
 authors = ["pchan"]
 edition = "2018"
