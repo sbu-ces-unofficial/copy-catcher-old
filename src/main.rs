@@ -24,7 +24,7 @@ fn main() {
     let event_handler = EventHandler{};
 
     let mut frame = sciter::window::Builder::main_window()
-        .with_size((500, 275))
+        .with_size((800, 325))
         .create();
 
     frame.sciter_handler(handler);

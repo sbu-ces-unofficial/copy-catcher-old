@@ -1,1 +1,27 @@
 /* General CSS styles */
+
+html {
+    padding: 15px;
+}
+
+.row {
+    flow: horizontal;
+    border-spacing: *;
+}
+
+.full-width {
+    width: *;
+}
+
+.pushed-center {
+    margin-left: 1*;
+    margin-right: 1*;
+}
+
+.pushed-right {
+    margin-left: 1*;
+}
+
+progress {
+    foreground-color: green;
+}

@@ -8,9 +8,29 @@
           media="screen">
     <script type="text/tiscript">
       include "this://app/tis/main.tis"
+      include "this://app/tis/bar.tis"
     </script>
-    <title></title>
+    <title>Copy Catcher</title>
   </head>
   <body>
+    <label for="source-path">Source Path</label>
+    <br />
+    <input type="text" id="source-path" name="source-path" class="full-width" />
+    <br />
+    <br />
+    <label for="destination-path">Destination Path</label>
+    <br />
+    <input type="text" id="destination-path" name="destination-path" class="full-width" />
+    <br />
+    <br />
+    <input type="button" class="pushed-center" id="verify" value="Verify!" />
+    <br />
+    <br />
+    <progress id="verify-bar" class="full-width" max="100" />
+    <div class="row">
+      <p id="time-left" />
+      <p id="verify-bar-text" />
+    </div>
+    <p id="status-message">Ready to verify!</p>
   </body>
 </html>
