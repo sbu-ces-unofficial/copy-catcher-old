@@ -1,0 +1,110 @@
+/* text alignment classes */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+
+/* alignment classes */
+.pushed-center {
+    margin: *;
+}
+
+.pushed-left {
+    margin-right: 1*;
+}
+
+.pushed-right {
+    margin-left: 1*;
+}
+
+
+/* font-style classes */
+.italicized {
+    font-style: italic;
+}
+
+
+/* margin classes */
+.sm-tmargin {
+    margin-top: 5px;
+}
+
+.sm-rmargin {
+    margin-right: 5px;
+}
+
+.sm-bmargin {
+    margin-bottom: 5px;
+}
+
+.sm-lmargin {
+    margin-left: 5px;
+}
+
+.md-tmargin {
+    margin-top: 10px;
+}
+
+.md-rmargin {
+    margin-right: 10px;
+}
+
+.md-bmargin {
+    margin-bottom: 10px;
+}
+
+.md-lmargin {
+    margin-left: 10px;
+}
+
+.lg-tmargin {
+    margin-top: 15px;
+}
+
+.lg-rmargin {
+    margin-right: 15px;
+}
+
+.lg-bmargin {
+    margin-bottom: 15px;
+}
+
+.lg-lmargin {
+    margin-left: 15px;
+}
+
+
+/* width classes */
+.sm-width {
+    width: 15vw;
+}
+
+.md-width {
+    width: 30vw;
+}
+
+.lg-width {
+    width: 60vw;
+}
+
+
+/* font classes */
+.sm-font {
+    font-size: 12rem;
+}
+
+.md-font {
+    font-size: 16rem;
+}
+
+.lg-font {
+    font-size: 20rem;
+}

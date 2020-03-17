@@ -10,10 +10,19 @@ namespace bar {
 
     function incrementProgess() {
         let progress = self.$(#verify-bar).value;
-        self.$(#verify-bar).value = progress + 5;
-        self.$(#verify-bar-text).value = progress.toString() + "%";
-        if (progress >= 100) {
+        let currentProgress = progress + 20;
+        self.$(#verify-bar).value = currentProgress;
+        self.$(#verify-bar-text).value = currentProgress.toString() + "%";
+        if (currentProgress >= 100) {
             self.$(#status-message).value = 'Done!';
+
+            view.dialog({
+                url: "result.htm",
+                height: "500px",
+                parameters: {
+                    result: "hello",
+                },
+            });
         } else {
             self.$(#status-message).value = "Verifying " + paths[rand(paths.length)] + "...";
             self.timer(500, incrementProgess, true);

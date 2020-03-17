@@ -4,6 +4,8 @@
     <meta name="viewpoint" content="width=deivce-width, initial-scale=1">
     <link type="type/css" rel="stylesheet" href="this://app/css/main.css"
           media="screen">
+    <link type="type/css" rel="stylesheet" href="this://app/css/utils.css"
+          media="screen">
     <link type="type/css" rel="stylesheet" href="this://app/css/theme/nord.css"
           media="screen">
     <script type="text/tiscript">
@@ -13,24 +15,26 @@
     <title>Copy Catcher</title>
   </head>
   <body>
-    <label for="source-path">Source Path</label>
-    <br />
-    <input type="text" id="source-path" name="source-path" class="full-width" />
-    <br />
-    <br />
-    <label for="destination-path">Destination Path</label>
-    <br />
-    <input type="text" id="destination-path" name="destination-path" class="full-width" />
-    <br />
-    <br />
-    <input type="button" class="pushed-center" id="verify" value="Verify!" />
-    <br />
-    <br />
-    <progress id="verify-bar" class="full-width" max="100" />
-    <div class="row">
+    <div class="container">
+      <label for="source-path">Source Path</label>
+      <br />
+      <input type="text" id="source-path" name="source-path" class="full-width" />
+      <br />
+      <br />
+      <label for="destination-path">Destination Path</label>
+      <br />
+      <input type="text" id="destination-path" name="destination-path" class="full-width" />
+      <br />
+      <br />
+      <input type="button" class="pushed-center" id="verify" value="Verify!" />
+      <br />
+      <br />
+      <progress id="verify-bar" class="full-width" max="100" />
+      <div class="row">
       <p id="time-left" />
       <p id="verify-bar-text" />
+      </div>
+      <p id="status-message">Ready to verify!</p>
     </div>
-    <p id="status-message">Ready to verify!</p>
   </body>
 </html>

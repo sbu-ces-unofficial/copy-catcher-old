@@ -1,0 +1,51 @@
+function self.ready() {
+    self.$(#ok-button).on("click", function() {
+        view.close();
+    });
+    retrieveMessages();
+}
+
+function retrieveMessages() {
+    let messages = [
+        "Hello",
+        "Bye",
+        "Testing",
+        "Testing A",
+        "Testing B",
+        "Testing C",
+        "Testing D",
+        "Testing E",
+        "Testing F",
+        "Testing G",
+        "Testing H",
+        "Testing I",
+        "Testing J",
+        "Testing K",
+        "Testing L",
+        "Testing M",
+        "Testing N",
+        "Testing O",
+        "Testing P",
+        "Testing Q",
+        "Testing R",
+        "Testing S",
+        "Testing T",
+        "Testing U",
+        "Testing V",
+        "Testing W",
+        "Testing X",
+        "Testing Y",
+        "Testing Z",
+    ];
+    for (let message of messages) {
+        log(message);
+    }
+}
+
+function log(message) {
+    let spanElem = new Element("span");
+    spanElem.content(message);
+    let brElem = new Element("br");
+    self.$(#log).append(spanElem);
+    self.$(#log).append(brElem);
+}

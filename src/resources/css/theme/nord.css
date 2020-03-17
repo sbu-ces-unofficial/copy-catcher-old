@@ -20,14 +20,19 @@ input[type=button], input[type=number], input[type=text] {
 }
 
 label {
-    color: @NORD7
+    color: @NORD8
 }
 
 p {
-    color: @NORD7
+    color: @NORD8
 }
 
 progress {
     background-color: @NORD1;
     foreground-color: @NORD8;
+}
+
+#log {
+    background-color: @NORD1;
+    color: @NORD8;
 }
