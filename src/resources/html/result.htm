@@ -10,40 +10,25 @@
           media="screen">
     <script type="text/tiscript">
       include "this://app/tis/result.tis"
+      include "this://app/tis/bar.tis"
     </script>
     <title>Copy Catcher</title>
   </head>
   <body>
     <div class="container">
+      <progress id="verify-bar" class="full-width" max="100" />
+      <div class="row">
+        <p id="time-left" />
+        <p id="verify-bar-text" />
+      </div>
       <p>Log:</p>
       <div id="log">
-        <span>Hello</span>
-        <br />
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
-        Hello
       </div>
       <p id="result" class="center" />
-      <input type="button" id="ok-button" class="pushed-center" value="Ok" />
+      <div class="row">
+        <input type="button" id="export-button" value="Export" />
+        <input type="button" id="ok-cancel-button" value="Cancel" />
+      </div>
     </div>
   </body>
 </html>

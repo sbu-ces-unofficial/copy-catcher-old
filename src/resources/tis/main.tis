@@ -1,9 +1,13 @@
 include("bar.tis");
 
 function self.ready() {
-    self.$(#verify-bar-text).value = "0%";
-    self.$(#time-left).value = "Time Left: XX:XX";
     self.$(#verify).on("click", function() {
-        self.timer(1000, bar.incrementProgess, true);
+        view.dialog({
+            url: "result.htm",
+            height: "600px",
+            parameters: {
+                result: "hello",
+            },
+        });
     });
 }
