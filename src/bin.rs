@@ -5,13 +5,21 @@ extern crate sciter;
 
 mod load_handler;
 
+use sciter::Value;
+
 struct EventHandler {}
 
-impl EventHandler {}
+impl EventHandler {
+
+    fn export_to_file(&self, filename: sciter::Value) {
+    }
+
+}
 
 impl sciter::EventHandler for EventHandler {
 
     dispatch_script_call! {
+        fn export_to_file(Value);
     }
 
 }
