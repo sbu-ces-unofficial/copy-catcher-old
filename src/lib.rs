@@ -1,3 +1,5 @@
+#![feature(trait_alias)]
+
 use std::collections::HashMap;
 use std::fs::metadata;
 use std::path::Path;
@@ -15,6 +17,7 @@ pub enum VerifyErrType {
     OK,
 }
 
+pub trait VerifyErrFilterer = Fn(&VerifyErrType) -> bool;
 type VerifyErrMessage = String;
 type VerifyErrStats = HashMap<VerifyErrType, u64>;
 
@@ -43,6 +46,11 @@ pub fn verify_path_async(src_path: &str, dst_path: &str, sender: flume::Sender<V
 }
 
 pub fn verify_path_with_logger(src_path: &str, dst_path: &str, log: fn(&VerifyErr)) -> VerifyErrStats {
+    verify_path_with_filtered_logger(src_path, dst_path, log, verify_err_accept_all_filter)
+}
+
+pub fn verify_path_with_filtered_logger<F>(src_path: &str, dst_path: &str, log: fn(&VerifyErr), filter: F) -> VerifyErrStats
+where F: VerifyErrFilterer {
     let mut stats = VerifyErrStats::new();
     let (tx, rx) = flume::unbounded();
 
@@ -57,7 +65,9 @@ pub fn verify_path_with_logger(src_path: &str, dst_path: &str, log: fn(&VerifyEr
     loop {
         match rx.try_recv() {
             Ok(verify_error) => {
-                log(&verify_error);
+                if filter(&verify_error.kind) {
+                    log(&verify_error);
+                }
                 *stats.entry(verify_error.kind).or_insert(0) += 1;
             },
             Err(flume::TryRecvError::Disconnected) => break,
@@ -68,7 +78,8 @@ pub fn verify_path_with_logger(src_path: &str, dst_path: &str, log: fn(&VerifyEr
     stats
 }
 
-pub fn verify_path(src_path: &str, dst_path: &str) -> Vec<VerifyErr> {
+pub fn verify_path_filtered<F>(src_path: &str, dst_path: &str, filter: F) -> Vec<VerifyErr>
+where F: VerifyErrFilterer {
     let mut result = Vec::new();
     let (tx, rx) = flume::unbounded();
 
@@ -82,13 +93,21 @@ pub fn verify_path(src_path: &str, dst_path: &str) -> Vec<VerifyErr> {
 
     loop {
         match rx.try_recv() {
-            Ok(verify_error) => result.push(verify_error),
+            Ok(verify_error) => {
+                if filter(&verify_error.kind) {
+                    result.push(verify_error);
+                }
+            },
             Err(flume::TryRecvError::Disconnected) => break,
             Err(flume::TryRecvError::Empty) => {},
         }
     }
 
     result
+}
+
+pub fn verify_path(src_path: &str, dst_path: &str) -> Vec<VerifyErr> {
+    verify_path_filtered(src_path, dst_path, verify_err_accept_all_filter)
 }
 
 pub fn verify(src: &str, dst: &str) -> VerifyErr {
@@ -124,4 +143,12 @@ pub fn verify(src: &str, dst: &str) -> VerifyErr {
             message: format!("The source, {}, matches with the destination, {}", src, dst),
         };
     }
+}
+
+pub fn verify_err_accept_all_filter(_verify_err_type: &VerifyErrType) -> bool {
+    true
+}
+
+pub fn verify_err_only_errors_filter(verify_err_type: &VerifyErrType) -> bool {
+    *verify_err_type != VerifyErrType::OK
 }
