@@ -15,4 +15,7 @@ name = "copy-catcher"
 path = "src/bin.rs"
 
 [dependencies]
+crossbeam = "0.7.3"
+flume = "0.7"
 sciter-rs = "*"
+walkdir = "2"
