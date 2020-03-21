@@ -20,9 +20,6 @@ function self.ready() {
     self.$(#ok-cancel-button).on("click", function() {
         view.close();
     });
-    self.$(#export-button).on("click", function() {
-        view.close();
-    });
     self.timer(1000, updateProgress, true);
     retrieveMessages();
 }
