@@ -2,59 +2,14 @@ include("bar.tis");
 
 namespace verifier {
 
-    let paths = ["C:\\Users\\testuser\\Downloads",
-                 "C:\\Users\\testuser\\Documents",
-                 "C:\\Users\\testuser\\Pictures",
-                 "C:\\Users\\testuser2\\Downloads",
-                 "C:\\Users\\testuser2\\Documents",
-                 "C:\\Users\\testuser2\\Pictures",
-                 "C:\\Users\\testuser2\\Music"];
-
-    let numFileSizeMismatched = 0;
-    let numFileMissing = 0;
-    let numFileOK = 0;
-
-    function start() {
+    function start(srcPath, dstPath) {
         // Set up the progress bar
         self.$(#verify-bar-text).value = "0%";
         self.$(#time-left).value = "Time Left: XX:XX";
 
-        self.timer(1000, updateProgress, true);
-        retrieveMessages();
-    }
-
-    function updateProgress() {
-        bar.incrementProgess();
-
-        let path = paths[rand(paths.length)];
-
-        // For demo + testing purpose
-        let n = rand(100);
-        if (n < 10) {
-            log(String.$({path} has a file size mismatch.));
-            numFileSizeMismatched++;
-        } else if (n < 30) {
-            log(String.$({path} is missing!));
-            numFileMissing++;
-        } else {
-            log(String.$({path} is fine.));
-            numFileOK++;
-        }
-        // ends here
-
-        if (!bar.isDone()) {
-            self.timer(500, updateProgress, true);
-        } else {
-            log(String.$({numFileOK} are OK, {numFileSizeMismatched} have file size mismatch, {numFileMissing} are missing!));
-            log("");
-        }
-    }
-
-    function retrieveMessages() {
-        let messages = [];
-        for (let message of messages) {
-            log(message);
-        }
+        view.set_progress_updater(bar.incrementProgess);
+        view.set_logger(log);
+        view.verify(srcPath, dstPath);
     }
 
     function log(message) {

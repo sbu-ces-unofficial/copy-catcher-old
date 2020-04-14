@@ -4,6 +4,8 @@ function self.ready() {
     self.$(#verify-bar-text).value = "0%";
     self.$(#time-left).value = "Time Left: XX:XX";
     self.$(#verify).on("click", function() {
-        verifier.start();
+        let srcPath = self.$(#source-path).value;
+        let dstPath = self.$(#destination-path).value;
+        verifier.start(srcPath, dstPath);
     });
 }

@@ -1,14 +1,10 @@
 namespace bar {
 
-    function incrementProgess() {
+    function incrementProgess(val) {
         let progress = self.$(#verify-bar).value;
-        let currentProgress = progress + 4;
+        let currentProgress = progress + val;
         self.$(#verify-bar).value = currentProgress;
         self.$(#verify-bar-text).value = currentProgress.toString() + "%";
-    }
-
-    function isDone() {
-        return self.$(#verify-bar).value >= 100;
     }
 
 }
