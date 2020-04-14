@@ -1,32 +1,14 @@
 namespace bar {
 
-    let paths = ["C:\\Users\\testuser\\Downloads",
-                 "C:\\Users\\testuser\\Documents",
-                 "C:\\Users\\testuser\\Pictures",
-                 "C:\\Users\\testuser2\\Downloads",
-                 "C:\\Users\\testuser2\\Documents",
-                 "C:\\Users\\testuser2\\Pictures",
-                 "C:\\Users\\testuser2\\Music"];
-
     function incrementProgess() {
         let progress = self.$(#verify-bar).value;
-        let currentProgress = progress + 20;
+        let currentProgress = progress + 4;
         self.$(#verify-bar).value = currentProgress;
         self.$(#verify-bar-text).value = currentProgress.toString() + "%";
-        if (currentProgress >= 100) {
-            self.$(#status-message).value = 'Done!';
+    }
 
-            view.dialog({
-                url: "result.htm",
-                height: "500px",
-                parameters: {
-                    result: "hello",
-                },
-            });
-        } else {
-            self.$(#status-message).value = "Verifying " + paths[rand(paths.length)] + "...";
-            self.timer(500, incrementProgess, true);
-        }
+    function isDone() {
+        return self.$(#verify-bar).value >= 100;
     }
 
 }

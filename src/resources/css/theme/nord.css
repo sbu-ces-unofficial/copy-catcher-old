@@ -33,6 +33,6 @@ progress {
 }
 
 #log {
-    background-color: @NORD1;
+    background: @NORD1;
     color: @NORD8;
 }

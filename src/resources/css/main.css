@@ -24,10 +24,17 @@ input[type=button]:hover {
 }
 
 #log {
-    min-height: 65vh;
-    max-height: 65vh;
+    min-height: 50vh;
+    max-height: 50vh;
     overflow: scroll;
-    padding: 1vw;
+}
+
+#log > text {
+    margin: 0;
+    padding: 0 0 0 1vw;
+    display: block;
+    background: none;
+    color: inherit;
 }
 
 progress {
