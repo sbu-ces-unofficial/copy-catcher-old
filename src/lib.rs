@@ -18,6 +18,7 @@ pub enum VerifyErrType {
 }
 
 pub trait VerifyErrFilterer = Fn(&VerifyErrType) -> bool;
+pub trait VerifyErrLogger = Fn(&VerifyErr);
 type VerifyErrMessage = String;
 type VerifyErrStats = HashMap<VerifyErrType, u64>;
 
@@ -45,12 +46,13 @@ pub fn verify_path_async(src_path: &str, dst_path: &str, sender: flume::Sender<V
     Ok(())
 }
 
-pub fn verify_path_with_logger(src_path: &str, dst_path: &str, log: fn(&VerifyErr)) -> VerifyErrStats {
+pub fn verify_path_with_logger<L>(src_path: &str, dst_path: &str, log: L) -> VerifyErrStats
+where L: VerifyErrLogger {
     verify_path_with_filtered_logger(src_path, dst_path, log, verify_err_accept_all_filter)
 }
 
-pub fn verify_path_with_filtered_logger<F>(src_path: &str, dst_path: &str, log: fn(&VerifyErr), filter: F) -> VerifyErrStats
-where F: VerifyErrFilterer {
+pub fn verify_path_with_filtered_logger<F, L>(src_path: &str, dst_path: &str, log: L, filter: F) -> VerifyErrStats
+where F: VerifyErrFilterer, L: VerifyErrLogger {
     let mut stats = VerifyErrStats::new();
     let (tx, rx) = flume::unbounded();
 
