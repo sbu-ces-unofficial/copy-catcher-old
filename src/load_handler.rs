@@ -1,8 +1,8 @@
-extern crate sciter;
-
-use sciter::host;
 use std::fs::File;
 use std::io::Read;
+
+use sciter::host;
+use sciter::w2s;
 
 pub struct LoadHandler {
     archive: host::Archive,

@@ -1,11 +1,14 @@
 #![windows_subsystem = "windows"]
 
-#[macro_use]
-extern crate sciter;
-
 mod load_handler;
 
+use std::thread;
+
+use sciter;
+use sciter::dispatch_script_call;
+use sciter::make_args;
 use sciter::Value;
+use verifier;
 
 struct EventHandler {
     frontend_logger: Option<sciter::Value>,

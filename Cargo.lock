@@ -22,10 +22,8 @@ checksum = "4785bdd1c96b2a846b2bd7cc02e86b6b3dbf14e7e53446c4f54c92a361040822"
 name = "copy-catcher"
 version = "0.1.0"
 dependencies = [
- "crossbeam",
- "flume",
  "sciter-rs",
- "walkdir",
+ "verifier",
 ]
 
 [[package]]
@@ -205,6 +203,15 @@ name = "spin"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6e63cff320ae2c57904679ba7cb63280a3dc4613885beafb148ee7bf9aa9042d"
+
+[[package]]
+name = "verifier"
+version = "0.1.0"
+dependencies = [
+ "crossbeam",
+ "flume",
+ "walkdir",
+]
 
 [[package]]
 name = "walkdir"
