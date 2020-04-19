@@ -8,6 +8,8 @@ use crossbeam::thread;
 use flume;
 use walkdir::WalkDir;
 
+pub mod files;
+
 #[derive(PartialEq, Eq, Hash)]
 pub enum VerifyErrType {
     SrcMissing,
@@ -18,7 +20,7 @@ pub enum VerifyErrType {
 }
 
 pub trait VerifyErrFilterer = Fn(&VerifyErrType) -> bool;
-pub trait VerifyErrLogger = Fn(&VerifyErr);
+pub trait VerifyErrLogger = FnMut(&VerifyErr);
 type VerifyErrMessage = String;
 type VerifyErrStats = HashMap<VerifyErrType, u64>;
 
@@ -51,7 +53,7 @@ where L: VerifyErrLogger {
     verify_path_with_filtered_logger(src_path, dst_path, log, verify_err_accept_all_filter)
 }
 
-pub fn verify_path_with_filtered_logger<F, L>(src_path: &str, dst_path: &str, log: L, filter: F) -> VerifyErrStats
+pub fn verify_path_with_filtered_logger<F, L>(src_path: &str, dst_path: &str, mut log: L, filter: F) -> VerifyErrStats
 where F: VerifyErrFilterer, L: VerifyErrLogger {
     let mut stats = VerifyErrStats::new();
     let (tx, rx) = flume::unbounded();

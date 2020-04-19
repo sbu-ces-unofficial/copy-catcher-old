@@ -17,17 +17,33 @@ struct EventHandler {
 
 impl EventHandler {
 
-    fn get_logger_fn(&self) -> impl Fn(&verifier::VerifyErr) {
+    fn get_logger_fn(&self, src_path: &str) -> impl FnMut(&verifier::VerifyErr) {
         let frontend_logger = self.frontend_logger.as_ref().expect("set_logger() should have been called first!");
         let logger = frontend_logger.clone();
 
         let progress_updater = self.progress_updater.as_ref().expect("set_progress_updater() should have been called first!");
         let updater = progress_updater.clone();
 
+        // TODO: error handling
+        let _ = logger.call(None, &make_args!("Calculating how many files to verify..."), None);
+        let num_files = verifier::files::count(src_path);
+        let _ = logger.call(None, &make_args!(format!("Verifying {} files...", num_files)), None);
+        let _ = logger.call(None, &make_args!(""), None);
+
+        let update_frequency = num_files / 100;
+        let progress = make_args!(1);
+        let mut current_times_called = 0;
         move |verify_error: &verifier::VerifyErr| {
             // TODO: error handling
-            let _ = logger.call(None, &make_args!(verify_error.message.clone()), None);
-            let _ = updater.call(None, &make_args!(33.33), None);
+            if verify_error.kind != verifier::VerifyErrType::OK {
+                let _ = logger.call(None, &make_args!(verify_error.message.clone()), None);
+            }
+
+            current_times_called += 1;
+            if current_times_called / update_frequency > 0 {
+                current_times_called = 0;
+                let _ = updater.call(None, &progress, None);
+            }
         }
     }
 
