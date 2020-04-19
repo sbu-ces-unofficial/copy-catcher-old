@@ -19,6 +19,10 @@ html {
     width: *;
 }
 
+.ninety-percent-width {
+    width: 90%;
+}
+
 input[type=button]:hover {
     cursor: pointer;
 }

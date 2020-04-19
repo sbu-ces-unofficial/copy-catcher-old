@@ -17,12 +17,18 @@
     <div class="container">
       <label for="source-path">Source Path</label>
       <br />
-      <input type="text" id="source-path" name="source-path" class="full-width" />
+      <div class="row">
+        <input type="text" id="source-path" name="source-path" class="ninety-percent-width" />
+        <input type="button" id="source-path-select" value="..." class="float-right" />
+      </div>
       <br />
       <br />
       <label for="destination-path">Destination Path</label>
       <br />
-      <input type="text" id="destination-path" name="destination-path" class="full-width" />
+      <div class="row">
+        <input type="text" id="destination-path" name="destination-path" class="ninety-percent-width" />
+        <input type="button" id="destination-path-select" value="..." class="float-right" />
+      </div>
       <br />
       <br />
       <input type="button" class="pushed-center" id="verify" value="Verify!" />

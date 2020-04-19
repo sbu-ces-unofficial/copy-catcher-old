@@ -8,4 +8,21 @@ function self.ready() {
         let dstPath = self.$(#destination-path).value;
         verifier.start(srcPath, dstPath);
     });
+
+    self.$(#source-path-select).on("click", selectSrcFolder);
+    self.$(#destination-path-select).on("click", selectDstFolder);
+}
+
+function selectSrcFolder() {
+    let filename = view.selectFolder("Select the source path...", "/");
+    if (filename !== undefined) {
+        self.$(#source-path).value = URL.toPath(filename);
+    } 
+}
+
+function selectDstFolder() {
+    let filename = view.selectFolder("Select the destination path...", "/");
+    if (filename !== undefined) {
+        self.$(#destination-path).value = URL.toPath(filename);
+    } 
 }
