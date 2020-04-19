@@ -40,19 +40,22 @@ impl EventHandler {
     }
 
     fn verify(&self, src_path: String, dst_path: String) {
-        let logger = self.get_logger_fn();
-        let stats = verifier::verify_path_with_filtered_logger(&src_path, &dst_path, logger, verifier::verify_err_only_errors_filter);
+        let frontend_logger = self.frontend_logger.as_ref().cloned().expect("set_logger() should have been called first!");
+        let logger = self.get_logger_fn(&src_path);
 
-        let frontend_logger = self.frontend_logger.as_ref().expect("set_logger() should have been called first!");
-        let stats_message = format!("{} are OK, {} are missing, {} have file size mismatch!",
-                                    stats.get(&verifier::VerifyErrType::OK).unwrap_or(&0),
-                                    stats.get(&verifier::VerifyErrType::SrcMissing).unwrap_or(&0) + stats.get(&verifier::VerifyErrType::DstMissing).unwrap_or(&0),
-                                    stats.get(&verifier::VerifyErrType::SrcSmaller).unwrap_or(&0) + stats.get(&verifier::VerifyErrType::DstSmaller).unwrap_or(&0));
+        thread::spawn(move || {
+            let stats = verifier::verify_path_with_logger(&src_path, &dst_path, logger);
 
-        // TODO: error handling
-        let _ = frontend_logger.call(None, &make_args!(""), None);
-        let _ = frontend_logger.call(None, &make_args!("Verification is complete!"), None);
-        let _ = frontend_logger.call(None, &make_args!(stats_message), None);
+            let stats_message = format!("{} are OK, {} are missing, {} have file size mismatch!",
+                                        stats.get(&verifier::VerifyErrType::OK).unwrap_or(&0),
+                                        stats.get(&verifier::VerifyErrType::SrcMissing).unwrap_or(&0) + stats.get(&verifier::VerifyErrType::DstMissing).unwrap_or(&0),
+                                        stats.get(&verifier::VerifyErrType::SrcSmaller).unwrap_or(&0) + stats.get(&verifier::VerifyErrType::DstSmaller).unwrap_or(&0));
+
+            // TODO: error handling
+            let _ = frontend_logger.call(None, &make_args!(""), None);
+            let _ = frontend_logger.call(None, &make_args!("Verification is complete!"), None);
+            let _ = frontend_logger.call(None, &make_args!(stats_message), None);
+        });
     }
 
 }
