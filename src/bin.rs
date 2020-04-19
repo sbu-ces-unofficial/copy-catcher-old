@@ -68,6 +68,9 @@ impl sciter::EventHandler for EventHandler {
 }
 
 fn main() {
+    let _ = sciter::set_options(
+        sciter::RuntimeOptions::ScriptFeatures(sciter::SCRIPT_RUNTIME_FEATURES::ALLOW_SYSINFO as u8)
+    );
     let _ = sciter::set_options(sciter::RuntimeOptions::DebugMode(true));
 
     let resources = include_bytes!("resources.rc");
