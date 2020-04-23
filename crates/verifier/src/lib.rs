@@ -4,8 +4,8 @@ use std::collections::HashMap;
 use std::fs::metadata;
 use std::path::Path;
 
-use crossbeam::thread;
 use flume;
+use std::thread;
 use walkdir::WalkDir;
 
 pub mod files;
@@ -58,13 +58,12 @@ where F: VerifyErrFilterer, L: VerifyErrLogger {
     let mut stats = VerifyErrStats::new();
     let (tx, rx) = flume::unbounded();
 
-    // TODO: fix unwrap
-    thread::scope(|scope| {
-        scope.spawn(|_| {
-            // TODO: error handling
-            let _ = verify_path_async(src_path, dst_path, tx);
-        });
-    }).unwrap();
+    let src_path = src_path.to_owned().clone();
+    let dst_path = dst_path.to_owned().clone();
+    thread::spawn(move || {
+        // TODO: error handling
+        let _ = verify_path_async(&src_path, &dst_path, tx);
+    });
     
     loop {
         match rx.try_recv() {
@@ -87,13 +86,12 @@ where F: VerifyErrFilterer {
     let mut result = Vec::new();
     let (tx, rx) = flume::unbounded();
 
-    // TODO: fix unwrap
-    thread::scope(|scope| {
-        scope.spawn(|_| {
-            // TODO: error handling
-            let _ = verify_path_async(src_path, dst_path, tx);
-        });
-    }).unwrap();
+    let src_path = src_path.to_owned().clone();
+    let dst_path = dst_path.to_owned().clone();
+    thread::spawn(move || {
+        // TODO: error handling
+        let _ = verify_path_async(&src_path, &dst_path, tx);
+    });
 
     loop {
         match rx.try_recv() {
