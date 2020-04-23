@@ -4,6 +4,7 @@ mod load_handler;
 
 use std::thread;
 
+use debug::debug;
 use sciter;
 use sciter::dispatch_script_call;
 use sciter::make_args;
@@ -18,10 +19,14 @@ struct EventHandler {
 impl EventHandler {
 
     fn get_logger_fn(&self, src_path: &str) -> impl FnMut(&verifier::VerifyErr) {
+        debug!("get_logger_fn: getting frontend logger...");
         let frontend_logger = self.frontend_logger.as_ref().expect("set_logger() should have been called first!");
+        debug!("get_logger_fn: got frontend_logger!");
         let logger = frontend_logger.clone();
 
+        debug!("get_logger_fn: getting progress updater...");
         let progress_updater = self.progress_updater.as_ref().expect("set_progress_updater() should have been called first!");
+        debug!("get_logger_fn: got progress updater!");
         let updater = progress_updater.clone();
 
         // TODO: error handling
@@ -36,11 +41,13 @@ impl EventHandler {
         move |verify_error: &verifier::VerifyErr| {
             // TODO: error handling
             if verify_error.kind != verifier::VerifyErrType::OK {
+                debug!(format!("get_logger_fn: logging {:?}!", verify_error));
                 let _ = logger.call(None, &make_args!(verify_error.message.clone()), None);
             }
 
             current_times_called += 1;
             if current_times_called / update_frequency > 0 {
+                debug!("get_logger_fn: updating progress...");
                 current_times_called = 0;
                 let _ = updater.call(None, &progress, None);
             }
@@ -56,10 +63,13 @@ impl EventHandler {
     }
 
     fn verify(&self, src_path: String, dst_path: String) {
+        debug!("verify: getting frontend logger...");
         let frontend_logger = self.frontend_logger.as_ref().cloned().expect("set_logger() should have been called first!");
+        debug!("verify: got frontend logger!");
         let logger = self.get_logger_fn(&src_path);
 
         thread::spawn(move || {
+            debug!(format!("thread::spawn: starting to verify {}...", &src_path));
             let stats = verifier::verify_path_with_logger(&src_path, &dst_path, logger);
 
             let stats_message = format!("{} are OK, {} are missing, {} have file size mismatch!",

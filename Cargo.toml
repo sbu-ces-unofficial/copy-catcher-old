@@ -10,10 +10,12 @@ name = "copy-catcher"
 path = "src/bin.rs"
 
 [dependencies]
+debug = { path = "crates/debug" }
 sciter-rs = "*"
 verifier = { path = "crates/verifier" }
 
 [workspace]
 members = [
+    "crates/debug",
     "crates/verifier"
 ]

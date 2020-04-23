@@ -4,12 +4,14 @@ use std::collections::HashMap;
 use std::fs::metadata;
 use std::path::Path;
 
+use debug::debug;
 use flume;
 use std::thread;
 use walkdir::WalkDir;
 
 pub mod files;
 
+#[derive(Debug)]
 #[derive(PartialEq, Eq, Hash)]
 pub enum VerifyErrType {
     SrcMissing,
@@ -24,6 +26,7 @@ pub trait VerifyErrLogger = FnMut(&VerifyErr);
 type VerifyErrMessage = String;
 type VerifyErrStats = HashMap<VerifyErrType, u64>;
 
+#[derive(Debug)]
 pub struct VerifyErr {
     pub kind: VerifyErrType,
     pub message: VerifyErrMessage,
@@ -41,7 +44,9 @@ pub fn verify_path_async(src_path: &str, dst_path: &str, sender: flume::Sender<V
             let dst_path = Path::new(dst_path).join(base_path);
             let dst = dst_path.to_str().unwrap();
 
+            debug!(format!("verify_path_async: comparing {} against {}...", &src, &dst));
             let verify_err = verify(src, dst);
+            debug!(format!("verify_path_async: got {:?}.", &verify_err));
             sender.send(verify_err)?
         }
     }
