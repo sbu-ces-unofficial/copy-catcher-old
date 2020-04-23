@@ -12,3 +12,5 @@
 
 # Don't include the binary form of resources
 resources.rc
+
+/crates/*/target
