@@ -21,14 +21,12 @@ impl EventHandler {
 
     fn get_logger_fn(&self, src_path: &str) -> impl FnMut(&verifier::VerifyErr) {
         debug!("get_logger_fn: getting frontend logger...");
-        let frontend_logger = self.frontend_logger.as_ref().expect("set_logger() should have been called first!");
+        let logger = self.frontend_logger.as_ref().cloned().expect("set_logger() should have been called first!");
         debug!("get_logger_fn: got frontend_logger!");
-        let logger = frontend_logger.clone();
 
         debug!("get_logger_fn: getting progress updater...");
-        let progress_updater = self.progress_updater.as_ref().expect("set_progress_updater() should have been called first!");
+        let updater = self.progress_updater.as_ref().cloned().expect("set_progress_updater() should have been called first!");
         debug!("get_logger_fn: got progress updater!");
-        let updater = progress_updater.clone();
 
         // TODO: error handling
         let _ = logger.call(None, &make_args!("Calculating how many files to verify..."), None);
@@ -49,7 +47,7 @@ impl EventHandler {
             }
 
             current_times_called += 1;
-            if current_times_called / update_frequency > 0 {
+            if current_times_called > update_frequency {
                 debug!("get_logger_fn: updating progress...");
                 current_times_called = 0;
                 let _ = updater.call(None, &progress, None);
@@ -70,6 +68,10 @@ impl EventHandler {
         let frontend_logger = self.frontend_logger.as_ref().cloned().expect("set_logger() should have been called first!");
         debug!("verify: got frontend logger!");
         let logger = self.get_logger_fn(&src_path);
+
+        debug!("get_logger_fn: getting progress updater...");
+        let updater = self.progress_updater.as_ref().cloned().expect("set_progress_updater() should have been called first!");
+        debug!("get_logger_fn: got progress updater!");
 
         thread::spawn(move || {
             debug!(format!("thread::spawn: starting to verify {}...", &src_path));
