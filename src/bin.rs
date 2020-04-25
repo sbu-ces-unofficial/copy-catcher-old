@@ -2,6 +2,7 @@
 
 mod load_handler;
 
+use std::cmp;
 use std::thread;
 
 use debug::debug;
@@ -35,8 +36,10 @@ impl EventHandler {
         let _ = logger.call(None, &make_args!(format!("Verifying {} files...", num_files)), None);
         let _ = logger.call(None, &make_args!(""), None);
 
-        let update_frequency = num_files / 100;
-        let progress = make_args!(1);
+        let update_frequency = cmp::max(1, num_files / 100);
+        let progress = make_args!((100.0 / num_files as f64).max(1.0_f64));
+        debug!(&update_frequency);
+        debug!(&progress);
         let mut current_times_called = 0;
         move |verify_error: &verifier::VerifyErr| {
             // TODO: error handling
@@ -76,6 +79,9 @@ impl EventHandler {
                                         stats.get(&verifier::VerifyErrType::OK).unwrap_or(&0),
                                         stats.get(&verifier::VerifyErrType::SrcMissing).unwrap_or(&0) + stats.get(&verifier::VerifyErrType::DstMissing).unwrap_or(&0),
                                         stats.get(&verifier::VerifyErrType::SrcSmaller).unwrap_or(&0) + stats.get(&verifier::VerifyErrType::DstSmaller).unwrap_or(&0));
+
+            // TODO: error handling
+            let _ = updater.call(None, &make_args!(100), None);
 
             // TODO: error handling
             let _ = frontend_logger.call(None, &make_args!(""), None);
