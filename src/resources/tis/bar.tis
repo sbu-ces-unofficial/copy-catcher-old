@@ -2,7 +2,7 @@ namespace bar {
 
     function incrementProgess(val) {
         let progress = self.$(#verify-bar).value;
-        let currentProgress = progress + val;
+        let currentProgress = Float.min(progress + val, 100.0);
         self.$(#verify-bar).value = currentProgress;
         self.$(#verify-bar-text).value = currentProgress.toString() + "%";
     }
