@@ -4,9 +4,9 @@ namespace verifier {
 
     function start(srcPath, dstPath) {
         // Set up the progress bar
-        self.$(#verify-bar-text).value = "0%";
         self.$(#time-left).value = "Time Left: XX:XX";
 
+        bar.reset();
         view.set_progress_updater(bar.incrementProgess);
         view.set_logger(log);
         view.verify(srcPath, dstPath);

@@ -7,4 +7,9 @@ namespace bar {
         self.$(#verify-bar-text).value = currentProgress.toString() + "%";
     }
 
+    function reset() {
+        self.$(#verify-bar).value = 0;
+        self.$(#verify-bar-text).value = "0%";
+    }
+
 }
