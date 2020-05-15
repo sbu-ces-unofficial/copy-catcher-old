@@ -89,6 +89,7 @@ impl EventHandler {
             let _ = frontend_logger.call(None, &make_args!(""), None);
             let _ = frontend_logger.call(None, &make_args!("Verification is complete!"), None);
             let _ = frontend_logger.call(None, &make_args!(stats_message), None);
+            let _ = frontend_logger.call(None, &make_args!("---------------------------------------------------------------------------"), None);
         });
     }
 
